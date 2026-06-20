@@ -1,0 +1,13 @@
+# Sensitive environment variables
+.env
+.env.local
+
+# Streamlit specific configuration and secrets
+.streamlit/secrets.toml
+
+# Python virtual environments
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
