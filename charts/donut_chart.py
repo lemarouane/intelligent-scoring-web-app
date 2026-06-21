@@ -1,13 +1,15 @@
+# comment : import des bibliothèques plotly et constants car on a besoin de plotly pour créer le graphique et constants pour la couleur primaire
 import plotly.graph_objects as go
 from utils.constants import COLOR_PRIMARY
 
+# comment : ici on définit la palette de couleurs pour le graphique
 PALETTE = [
     "#003366","#004488","#0055AA","#D4AF37","#C9A82C",
     "#0E9F6E","#16A34A","#F59E0B","#DC2626","#7C3AED",
     "#0891B2","#DB2777","#059669","#D97706",
 ]
 
-
+# comment : cette fonction retourne le graphique des contributions
 def donut_chart(rows: list) -> go.Figure:
     labels = [r["label"] for r in rows]
     values = [max(r["weighted"], 0.01) for r in rows]

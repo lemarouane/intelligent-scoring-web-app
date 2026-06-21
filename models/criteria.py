@@ -8,7 +8,11 @@ by exposing a typed, iterable object that pages/components can use
 to render forms and tables without hard-coding key names everywhere.
 """
 
+# ============================================================
+# comment : import des bibliothèques dataclasses et field
+# ============================================================
 from dataclasses import dataclass, field
+# comment : import des poids et labels des critères
 from utils.constants import BOA_WEIGHTS, SPECIFIC_WEIGHTS, CRITERIA_LABELS
 
 
@@ -66,6 +70,7 @@ class CriteriaSet:
         ]
 
 
+# comment : fonction qui permet de construire les critères BOA
 def build_boa_criteria_set() -> CriteriaSet:
     """BOA common criteria (70%), unweighted by category."""
     criteria = [
@@ -75,6 +80,7 @@ def build_boa_criteria_set() -> CriteriaSet:
     return CriteriaSet(categorie="BOA", criteria=criteria)
 
 
+# comment : fonction qui permet de construire les critères spécifiques
 def build_specific_criteria_set(categorie: str) -> CriteriaSet:
     """Category-specific criteria (30%) for the chosen client category."""
     weights = SPECIFIC_WEIGHTS.get(categorie, {})
@@ -85,6 +91,7 @@ def build_specific_criteria_set(categorie: str) -> CriteriaSet:
     return CriteriaSet(categorie=categorie, criteria=criteria)
 
 
+# comment : fonction qui permet de construire l'ensemble des critères
 def build_full_criteria_set(categorie: str) -> CriteriaSet:
     """Merged BOA + specific criteria set (100%) for a given category."""
     boa = build_boa_criteria_set()

@@ -1,7 +1,7 @@
 import plotly.graph_objects as go
 from utils.constants import COLOR_PRIMARY, COLOR_SUCCESS, COLOR_DANGER
 
-
+# comment : cette fonction retourne la couleur du score
 def _score_color(score: int) -> str:
     if score >= 80: return COLOR_SUCCESS
     if score >= 60: return "#16A34A"
@@ -9,6 +9,7 @@ def _score_color(score: int) -> str:
     return COLOR_DANGER
 
 
+# comment : cette fonction retourne le graphique des scores pondérés
 def weighted_bar_chart(rows: list) -> go.Figure:
     labels   = [r["label"] for r in rows]
     weighted = [r["weighted"] for r in rows]
@@ -46,6 +47,7 @@ def weighted_bar_chart(rows: list) -> go.Figure:
     return fig
 
 
+# comment : cette fonction retourne le graphique des scores partiels
 def partial_bar_chart(rows: list) -> go.Figure:
     labels  = [r["label"] for r in rows]
     partial = [r["partial"] for r in rows]

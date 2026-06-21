@@ -2,14 +2,18 @@
 # BOA INTELLIGENT CREDIT SCORING – SCORE TABLE COMPONENT
 # ============================================================
 
+# comment : import des bibliothèques streamlit et des helpers
 import streamlit as st
+# comment : import de la fonction score_color
 from utils.helpers import score_color
 
-
+# comment : fonction qui permet de rendre une ligne du tableau de score 
 def _row_html(label: str, poids, partial, weighted, bg: str) -> str:
+    #condition si le score partiel est None
     if partial is None:
         badge = '<span style="color:#94A3B8;font-size:0.78rem">—</span>'
         weighted_display = "—"
+    #sinon le score partiel est non Null
     else:
         color = score_color(partial)
         badge = (
@@ -17,7 +21,7 @@ def _row_html(label: str, poids, partial, weighted, bg: str) -> str:
             f'padding:2px 8px;font-size:0.75rem;font-weight:600">{partial}/100</span>'
         )
         weighted_display = f"{weighted:.2f}"
-
+    
     return f"""
 <div style="display:grid;grid-template-columns:3fr 1fr 1fr 1fr;gap:0.5rem;padding:0.5rem 1rem;background:{bg};border-bottom:1px solid #E2E8F0;font-size:0.82rem;align-items:center">
 <span style="color:#1E293B;font-weight:500">{label}</span>
@@ -27,7 +31,7 @@ def _row_html(label: str, poids, partial, weighted, bg: str) -> str:
 </div>
 """.strip()
 
-
+# comment : fonction qui permet de rendre le tableau de score
 def render_score_table(rows: list[dict], total: float = None):
     header_html = """
 <div style="display:grid;grid-template-columns:3fr 1fr 1fr 1fr;gap:0.5rem;padding:0.5rem 1rem;background:#003366;border-radius:8px 8px 0 0;font-size:0.78rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.04em">

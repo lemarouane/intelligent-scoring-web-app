@@ -1,7 +1,12 @@
+
+# ============================================================
+# comment : import des bibliothèques dataclasses et Optional
+# ============================================================
 from dataclasses import dataclass, field
 from typing import Optional
 
 
+# comment : classe qui permet de stocker les informations du client
 @dataclass
 class ClientProfile:
     nom: str = ""

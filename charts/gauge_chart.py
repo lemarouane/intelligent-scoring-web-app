@@ -1,6 +1,7 @@
+# comment : import des bibliothèques plotly
 import plotly.graph_objects as go
 
-
+# comment : cette fonction retourne le graphique du gauge 
 def gauge_chart(score: float, risk_class: str) -> go.Figure:
     color_map = {"A": "#0E9F6E", "B": "#16A34A", "C": "#F59E0B", "D": "#DC2626"}
     needle_color = color_map.get(risk_class, "#003366")

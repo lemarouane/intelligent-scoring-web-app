@@ -2,16 +2,20 @@
 # BOA INTELLIGENT CREDIT SCORING – NAVBAR COMPONENT
 # ============================================================
 
+# comment : import des bibliothèques streamlit et des helpers
 import streamlit as st
 from utils.helpers import topbar, navigate
+# comment : import des constantes de couleur
 from utils.constants import COLOR_PRIMARY, COLOR_SECONDARY
 
 
+# comment : fonction qui permet de rendre la barre de navigation
 def render_navbar(current_page: str = ""):
     """Thin wrapper around helpers.topbar for use inside page files."""
     topbar(current_page)
 
 
+# comment : fonction qui permet de rendre l'indicateur d'étape
 def render_step_indicator(current_step: int):
     """
     Horizontal 4-step progress indicator shown under the topbar on
@@ -50,6 +54,7 @@ def render_step_indicator(current_step: int):
             )
 
 
+# comment : fonction qui permet de rendre le fil d'Ariane
 def render_breadcrumb(items: list[str]):
     """Simple breadcrumb trail, e.g. ['Accueil', 'Commerçant', 'Scoring']."""
     trail = " &nbsp;›&nbsp; ".join(

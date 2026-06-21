@@ -2,10 +2,13 @@
 # BOA INTELLIGENT CREDIT SCORING – CARDS COMPONENT
 # ============================================================
 
+
+# comment : import des bibliothèques streamlit et constants car streamlit est utilisé pour l'interface et constants pour les couleurs
 import streamlit as st
 from utils.constants import CATEGORIES, COLOR_PRIMARY, COLOR_SECONDARY, COLOR_GRAY
 
 
+# comment : cette fonction retourne une carte de catégorie
 def render_category_card(categorie: str, key_suffix: str = "") -> bool:
     """
     Renders one professional category card (Page 2: Commerçant,
@@ -59,6 +62,7 @@ def render_category_card(categorie: str, key_suffix: str = "") -> bool:
     )
 
 
+# comment : cette fonction retourne une carte de métrique
 def render_metric_card(label: str, value: str, sub: str = "", color: str = COLOR_PRIMARY):
     """Small KPI card used on the dashboard and home page."""
     st.markdown(
@@ -73,6 +77,7 @@ def render_metric_card(label: str, value: str, sub: str = "", color: str = COLOR
     )
 
 
+# comment : cette fonction retourne une carte de fonctionnalité
 def render_feature_card(icon: str, title: str, description: str):
     """Feature highlight card used on the Accueil page."""
     st.markdown(
@@ -91,6 +96,7 @@ def render_feature_card(icon: str, title: str, description: str):
     )
 
 
+# comment : cette fonction retourne une ligne de critère de scoring
 def render_criterion_row(label: str, poids: int, partial, weighted):
     """
     Single-row display for a scoring criterion: label / weight /

@@ -1,7 +1,9 @@
+# comment : import des bibliothèques plotly et constants
 import plotly.graph_objects as go
 from utils.constants import COLOR_PRIMARY, COLOR_SECONDARY
 
 
+# comment : cette fonction retourne le graphique du radar
 def radar_chart(rows: list) -> go.Figure:
     categories = [r["label"] for r in rows]
     partial    = [r["partial"] for r in rows]

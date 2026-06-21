@@ -1,7 +1,9 @@
+# comment : import des bibliothèques plotly et constants
 import plotly.graph_objects as go
 from utils.constants import COLOR_PRIMARY, COLOR_SECONDARY
 
 
+# comment : cette fonction retourne le graphique du waterfall
 def waterfall_chart(rows: list, final_score: float) -> go.Figure:
     x_vals   = [r["label"] for r in rows] + ["Score Final"]
     y_vals   = [r["weighted"] for r in rows] + [None]
