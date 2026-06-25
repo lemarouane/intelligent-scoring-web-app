@@ -52,7 +52,7 @@ def generate_excel(
         ("Score Final", f"{final_score:.2f} / 100"),
         ("Classe de risque", f"Classe {risk_class}"),
         ("Décision", decision),
-        ("Probabilité de défaut", prob_default),
+        
     ]
     for i, (k, v) in enumerate(meta, start=3):
         ws1[f"A{i}"] = k

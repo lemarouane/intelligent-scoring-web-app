@@ -77,7 +77,7 @@ def generate_word(
         ("Score Final", f"{final_score:.2f} / 100"),
         ("Classe de risque", f"Classe {risk_class}"),
         ("Décision", decision),
-        ("Probabilité de défaut", prob_default),
+        
     ]
     for label, value in meta_data:
         _add_table_row(meta_table, [label, value])

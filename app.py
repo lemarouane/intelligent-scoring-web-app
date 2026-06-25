@@ -24,23 +24,7 @@ inject_global_css()
 # ── Sidebar ──────────────────────────────────────────────────
 with st.sidebar:
     # ── Brand header
-    st.markdown(
-        """
-        <div style="padding:1.5rem 0 1rem;border-bottom:1px solid #E2E8F0;margin-bottom:1.25rem">
-            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.25rem">
-                <span style="font-size:1.8rem">🏦</span>
-                <div>
-                    <div style="color:#003366 !important;font-weight:800;font-size:0.95rem;
-                                letter-spacing:0.04em">BANK OF AFRICA</div>
-                    <div style="color:#94A3B8 !important;font-size:0.68rem;margin-top:1px">
-                        Département Risque Crédit
-                    </div>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+ 
 
     # ── Navigation links
     st.markdown(

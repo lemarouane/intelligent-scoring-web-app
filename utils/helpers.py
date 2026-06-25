@@ -23,27 +23,43 @@ def score_color(score: int) -> str:
 
 def init_session_state():
     defaults = {
-        "categorie":       None,
-        "boa_scores":      {},
-        "boa_inputs":      {},
-        "specific_scores": {},
-        "specific_inputs": {},
-        "final_score":     None,
-        "risk_class":      None,
-        "ia_analysis":     None,
-        "nc_flag":         False,
-        "result_rows":     [],
+        "categorie":        None,
+        "boa_scores":       {},
+        "boa_inputs":       {},
+        "specific_scores":  {},
+        "specific_inputs":  {},
+        "final_score":      None,
+        "risk_class":       None,
+        "ia_analysis":      None,
+        "nc_flag":          False,
+        "result_rows":      [],
+        # ── BOA-100 mode keys ──────────────────────────────
+        "boa_inputs_100":   {},
+        "boa100_scores":    {},
+        "boa100_rows":      [],
+        "boa100_final":     None,
+        "boa100_class":     None,
+        "boa100_ia":        None,
+        "boa100_ia_error":  None,
+        "boa100_ia_pending": False,
+        "nc_flag_100":      False,
     }
     for k, v in defaults.items():
         if k not in st.session_state:
             st.session_state[k] = v
 
 
+# ── Routing table ─────────────────────────────────────────────
 PAGE_PATHS = {
-    "accueil":    "pages/1_Accueil.py",
-    "selection":  "pages/2_Selection_Client.py",
-    "formulaire": "pages/3_Formulaire_Scoring.py",
-    "resultats":  "pages/4_Dashboard_Resultats.py",
+    # Standard flow
+    "accueil":        "pages/1_Accueil.py",
+    "selection":      "pages/2_Selection_Client.py",
+    "formulaire":     "pages/3_Formulaire_Scoring.py",
+    "resultats":      "pages/4_Dashboard_Resultats.py",
+    # BOA-100 flow
+    "selection_boa":  "pages/5_Selection_BOA.py",
+    "formulaire_boa": "pages/6_Formulaire_BOA.py",
+    "resultats_boa":  "pages/7_Dashboard_BOA.py",
 }
 
 
@@ -75,7 +91,6 @@ def inject_global_css():
             border-right: 1px solid #E2E8F0 !important;
             box-shadow: 2px 0 12px rgba(0,51,102,0.06) !important;
         }
-        /* Reset all sidebar text to dark so navy bg override above doesn't bleed */
         section[data-testid="stSidebar"] * {
             color: #1E293B !important;
         }
@@ -155,6 +170,11 @@ def inject_global_css():
         .boa-nav-link.active {
             background: #EFF6FF;
             color: #003366;
+            font-weight: 700;
+        }
+        .boa-nav-link.active-boa {
+            background: #FFFBEB;
+            color: #92400E;
             font-weight: 700;
         }
         .boa-nav-dot {
@@ -313,24 +333,50 @@ def inject_global_css():
     )
 
 
+# ── BOA-100 pages — used to detect which topbar mode to render
+_BOA_PAGES = {"selection_boa", "formulaire_boa", "resultats_boa"}
+
+
 def topbar(current_page: str = ""):
     """
-    White sticky navbar with logo, divider, and nav links.
-    Fully visible on every page.
+    White sticky navbar. Shows standard nav for the normal flow,
+    and a BOA-mode variant (amber tint) when inside the BOA-100 flow.
     """
-    pages = [
-        ("🏠", "Accueil",    "accueil"),
-        ("👤", "Sélection",  "selection"),
-        ("📋", "Formulaire", "formulaire"),
-        ("📊", "Résultats",  "resultats"),
-    ]
+    is_boa_mode = current_page in _BOA_PAGES
+
+    if is_boa_mode:
+        # ── BOA-100 flow navbar ──────────────────────────────
+        pages = [
+            ("🏠", "Accueil",         "accueil"),
+            ("👤", "Sélection BOA",   "selection_boa"),
+            ("📋", "Formulaire BOA",  "formulaire_boa"),
+            ("📊", "Résultats BOA",   "resultats_boa"),
+        ]
+        mode_badge = (
+            '<span style="background:#FFFBEB;color:#92400E;border-radius:999px;'
+            'padding:3px 10px;font-size:0.72rem;font-weight:700;border:1px solid #FDE68A;'
+            'margin-left:0.5rem">🏦 Mode 100% BOA</span>'
+        )
+    else:
+        # ── Standard flow navbar ─────────────────────────────
+        pages = [
+            ("🏠", "Accueil",    "accueil"),
+            ("👤", "Sélection",  "selection"),
+            ("📋", "Formulaire", "formulaire"),
+            ("📊", "Résultats",  "resultats"),
+        ]
+        mode_badge = ""
 
     nav_items = ""
     for icon, label, key in pages:
-        active_cls = "active" if key == current_page else ""
-        dot        = '<span class="boa-nav-dot"></span>' if key == current_page else ""
+        if key == current_page:
+            css_cls = "active-boa" if is_boa_mode else "active"
+            dot     = '<span class="boa-nav-dot"></span>'
+        else:
+            css_cls = ""
+            dot     = ""
         nav_items += (
-            f'<span class="boa-nav-link {active_cls}">'
+            f'<span class="boa-nav-link {css_cls}">'
             f'{dot}{icon} {label}</span>'
         )
 
@@ -343,38 +389,22 @@ def topbar(current_page: str = ""):
             f'{cat}</span>'
         )
 
-    score = st.session_state.get("final_score")
+    # Show the correct score depending on which flow we're in
+    if is_boa_mode:
+        score     = st.session_state.get("boa100_final")
+        risk_cls  = st.session_state.get("boa100_class", "")
+    else:
+        score     = st.session_state.get("final_score")
+        risk_cls  = st.session_state.get("risk_class", "")
+
     score_html = ""
     if score is not None:
-        rc = st.session_state.get("risk_class", "")
         rc_colors = {"A": "#0E9F6E", "B": "#16A34A", "C": "#F59E0B", "D": "#DC2626"}
-        sc = rc_colors.get(rc, "#003366")
+        sc = rc_colors.get(risk_cls, "#003366")
         score_html = (
             f'<span style="background:{sc}18;color:{sc};border-radius:999px;'
             f'padding:3px 12px;font-size:0.75rem;font-weight:700;border:1px solid {sc}44">'
-            f'Score {score:.1f} · Classe {rc}</span>'
+            f'Score {score:.1f} · Classe {risk_cls}</span>'
         )
 
-    st.markdown(
-        f"""
-        <div class="boa-topbar">
-            <div class="boa-topbar-logo">
-                <span style="font-size:1.6rem">🏦</span>
-                <div>
-                    <div class="boa-topbar-title">BOA Credit Scoring</div>
-                    <div class="boa-topbar-sub">Département Risque Crédit</div>
-                </div>
-            </div>
-            <div class="boa-topbar-divider"></div>
-            <div style="display:flex;gap:0.25rem;align-items:center;flex-wrap:wrap">
-                {nav_items}
-            </div>
-            <div style="flex:1"></div>
-            <div style="display:flex;gap:0.5rem;align-items:center">
-                {badge_html}
-                {score_html}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+ 

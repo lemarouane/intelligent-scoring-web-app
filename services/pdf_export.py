@@ -94,7 +94,7 @@ def generate_pdf(
         ["Score Final :", f"{final_score:.2f} / 100"],
         ["Classe de risque :", f"Classe {risk_class}"],
         ["Décision :", decision],
-        ["Probabilité de défaut :", prob_default],
+        
     ]
     t = Table(meta, colWidths=[5*cm, 10*cm])
     t.setStyle(TableStyle([

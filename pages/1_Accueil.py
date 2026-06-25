@@ -40,11 +40,7 @@ box-shadow: 0 8px 32px rgba(0,51,102,0.08);
 Système Intelligent de<br>
 <span style="color:{COLOR_SECONDARY}">Scoring de Crédit Professionnel</span>
 </h1>
-<p style="color:#475569;font-size:1.05rem;max-width:640px;line-height:1.7;margin-bottom:2rem">
-Évaluez le risque de crédit des clients professionnels avec précision.
-Une solution bancaire combinant les critères BOA traditionnels
-et une intelligence artificielle avancée.
-</p>
+
 <div style="display:flex;gap:1rem;flex-wrap:wrap">
 <div style="background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.4);border-radius:8px;padding:0.6rem 1rem;color:#8a6d1f;font-size:0.85rem;font-weight:600">
 ✦ Scoring en temps réel
@@ -66,7 +62,7 @@ kpis = [
     ("9", "Critères BOA", "analysés automatiquement", COLOR_PRIMARY),
     ("3", "Profils clients", "Commerçant · Prof. Libérale · Personne Morale", COLOR_SECONDARY),
     ("6", "Visualisations", "Radar, Gauge, Waterfall…", "#0E9F6E"),
-    ("100", "Score maximal", "Grille de décision A/B/C/D", "#7C3AED"),
+    ("100", "Score maximal", "Grille de décision A/B/C/D/E/F/G", "#7C3AED"),
 ]
 for col, (val, label, sub, color) in zip([k1, k2, k3, k4], kpis):
     with col:
@@ -114,9 +110,7 @@ Critères spécifiques<br><em>Par catégorie professionnelle</em>
 <div style="margin-top:1.2rem;padding-top:1rem;border-top:1px solid #E2E8F0">
 <p style="margin:0;color:#475569;font-size:0.82rem;line-height:1.6">
 <strong>Développé par Oumayma Beioued</strong> dans le cadre de son
-mémoire de Master Finance réalisé au sein de <strong>Bank of Africa</strong>,
-avec pour objectif l'optimisation et l'automatisation du processus
-de scoring crédit à travers des méthodes quantitatives et l'intelligence artificielle.
+mémoire de Master Finance réalisé au sein de <strong>Bank of Africa</strong>
 </p>
 </div>
 
@@ -172,10 +166,51 @@ for col, (num, title, desc, color) in zip(cols, steps):
 st.markdown("<br><br>", unsafe_allow_html=True)
 
 # ─── CTA ─────────────────────────────────────────────────────
-_, cta_col, _ = st.columns([2, 1, 2])
-with cta_col:
-    if st.button("🚀 Commencer l'évaluation", use_container_width=True):
+st.markdown('<div class="section-header">Choisir un mode d\'évaluation</div>', unsafe_allow_html=True)
+
+cta_l, cta_r = st.columns(2, gap="large")
+
+with cta_l:
+    st.markdown(f"""
+<div style="background:#FFFFFF;border:1.5px solid #BFDBFE;border-radius:14px;
+            padding:1.75rem 1.5rem;text-align:center;
+            box-shadow:0 2px 12px rgba(0,51,102,0.07);margin-bottom:0.75rem">
+    <div style="font-size:2rem;margin-bottom:0.6rem">📊</div>
+    <div style="font-size:1rem;font-weight:800;color:{COLOR_PRIMARY};margin-bottom:0.4rem">
+        Scoring Standard
+    </div>
+    <div style="font-size:0.82rem;color:#64748B;line-height:1.6;margin-bottom:0.25rem">
+        Modèle complet <strong>BOA (70%) + Critères spécifiques (30%)</strong>
+        adaptés à la catégorie du client.
+    </div>
+    <div style="font-size:0.75rem;color:#94A3B8;margin-top:0.4rem">
+        Section A + Section B · Score sur 100 pts
+    </div>
+</div>
+""", unsafe_allow_html=True)
+    if st.button("🚀 Commencer l'évaluation standard", use_container_width=True, key="cta_standard"):
         navigate("selection")
+
+with cta_r:
+    st.markdown(f"""
+<div style="background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:14px;
+            padding:1.75rem 1.5rem;text-align:center;
+            box-shadow:0 2px 12px rgba(212,175,55,0.10);margin-bottom:0.75rem">
+    <div style="font-size:2rem;margin-bottom:0.6rem">🏦</div>
+    <div style="font-size:1rem;font-weight:800;color:#92400E;margin-bottom:0.4rem">
+        Scoring 100% BOA
+    </div>
+    <div style="font-size:0.82rem;color:#64748B;line-height:1.6;margin-bottom:0.25rem">
+        Analyse basée <strong>exclusivement sur les 9 critères BOA</strong>,
+        renormalisés sur 100 points. Valable pour toute catégorie.
+    </div>
+    <div style="font-size:0.75rem;color:#94A3B8;margin-top:0.4rem">
+        Section A uniquement · Poids renormalisés sur 100 pts
+    </div>
+</div>
+""", unsafe_allow_html=True)
+    if st.button("🏦 Commencer le scoring BOA pur", use_container_width=True, key="cta_boa100"):
+        navigate("selection_boa")
 
 st.markdown("""
 <div style="text-align:center;margin-top:2rem;color:#94A3B8;font-size:0.78rem">
