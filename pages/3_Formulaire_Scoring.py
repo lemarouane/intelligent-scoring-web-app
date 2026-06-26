@@ -339,6 +339,7 @@ with col_b_form:
             st.markdown("</div>", unsafe_allow_html=True)
 
         # Solde moyen seul (2 inputs internes)
+
         st.markdown(field_wrap(2, "Solde moyen créditeur", "10%", cat_color), unsafe_allow_html=True)
         sc1, sc2 = st.columns(2, gap="small")
         with sc1:
@@ -346,17 +347,16 @@ with col_b_form:
                                     value=float(specific_inputs.get("solde_moyen", 50000.0)),
                                     step=5000.0, key="f_solde", format="%.0f")
         with sc2:
-            montant_ref = float(boa_inputs.get("montant_credit", 100000.0))
-            st.number_input("Crédit ref. (MAD)", value=montant_ref, disabled=True,
+            mensualite_ref = float(boa_inputs.get("mensualite", 5000.0))
+            st.number_input("Mensualité réf. (MAD)", value=mensualite_ref, disabled=True,
                             key="f_solde_ref", format="%.0f")
-        s_solde, r_solde = score_solde_moyen(solde, montant_ref)
+        s_solde, r_solde = score_solde_moyen(solde, mensualite_ref)
         st.markdown(
             f'<div style="font-size:0.72rem;color:#64748B;margin-top:0.2rem">'
-            f'Ratio : <strong style="color:{cat_color}">{r_solde:.1f}%</strong> du crédit'
+            f'Ratio Solde/Mensualité : <strong style="color:{cat_color}">{r_solde:.2f}x</strong>'
             f'&nbsp;&nbsp; {badge("", s_solde, spec_weights["solde_moyen"])}</div>',
             unsafe_allow_html=True)
-        specific_inputs["solde_moyen"]    = solde
-        specific_inputs["montant_credit"] = montant_ref
+        specific_inputs["solde_moyen"] = solde
         specific_rows.append({"label": CRITERIA_LABELS["solde_moyen"],
                                "poids": spec_weights["solde_moyen"],
                                "partial": s_solde,

@@ -122,16 +122,15 @@ def score_transactions_digitales(level: str) -> int:
     }
     return mapping.get(level, 0)
 
-def score_solde_moyen(solde: float, montant_credit: float) -> tuple[int, float]:
-    """Returns (score, ratio_pct)"""
-    if montant_credit <= 0:
-        return 0, 0.0
-    ratio = (solde / montant_credit) * 100
-    if ratio > 20:    score = 100
-    elif ratio >= 15: score = 80
-    elif ratio >= 10: score = 60
-    elif ratio >= 5:  score = 40
-    else:             score = 20
+def score_solde_moyen(solde: float, mensualite: float):
+    if mensualite <= 0:
+        return 20, 0.0
+    ratio = solde / mensualite
+    if ratio >= 2:      score = 100
+    elif ratio >= 1.5:  score = 80
+    elif ratio >= 1.0:  score = 60
+    elif ratio >= 0.5:  score = 40
+    else:               score = 20
     return score, ratio
 
 ANCIENNETE_COMMERCE_OPTIONS = [
