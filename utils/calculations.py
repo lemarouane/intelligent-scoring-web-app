@@ -72,15 +72,14 @@ def score_mouvements(mouvement_crediteur: float, montant_credit: float) -> tuple
     return score, ratio
 
 def score_rme(rme: float, mensualite: float) -> tuple[int, float]:
-    """Returns (score, ratio)"""
     if mensualite <= 0:
         return 0, 0.0
     ratio = rme / mensualite
-    if ratio >= 5:    score = 100
-    elif ratio >= 3: score = 80
-    elif ratio >= 2: score = 60
-    elif ratio >= 1: score = 40
-    else:            score = 20
+    if ratio > 5:         score = 100
+    elif ratio > 3:       score = 80
+    elif ratio > 2:       score = 60
+    elif ratio > 1:       score = 20
+    else:                 score = 0
     return score, ratio
 
 ANCIENNETE_OPTIONS = [
@@ -171,22 +170,22 @@ def score_stabilite_revenus(revenues: list[float]) -> tuple[int, float, float, f
 
 ANCIENNETE_EXERCICE_OPTIONS = [
     "Moins de 2 ans",
-    "2 à 5 ans",
-    "5 à 10 ans",
-    "10 à 15 ans",
-    "Plus de 15 ans",
+    "2 à 4 ans",
+    "4 à 7 ans",
+    "7 à 10 ans",
+    "Plus de 10 ans",
 ]
 
 def score_anciennete_exercice(level: str) -> int:
     mapping = {
         "Moins de 2 ans": 20,
-        "2 à 5 ans":      40,
-        "5 à 10 ans":     60,
-        "10 à 15 ans":    80,
-        "Plus de 15 ans": 100,
+        "2 à 4 ans":      40,
+        "4 à 7 ans":      60,
+        "7 à 10 ans":     80,
+        "Plus de 10 ans": 100,
     }
     return mapping.get(level, 0)
-
+    
 def score_regularite_honoraires(mois: int) -> int:
     if mois == 12:   return 100
     if mois >= 10:   return 80
